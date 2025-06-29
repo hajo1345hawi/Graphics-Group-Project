@@ -24,7 +24,7 @@ interface WeatherStore {
   updateStats: (stats: Partial<WeatherStats>) => void;
 }
 
-export const useWeatherStore = create<WeatherStore>((set) => ({
+export const useWeatherStore = create<WeatherStore>((set, get) => ({
   settings: {
     rainIntensity: 60,
     windStrength: 30,

@@ -7,6 +7,7 @@ import { FogSystem } from './weather/FogSystem';
 import { GroundPlane } from './environment/GroundPlane';
 import { SkyBox } from './environment/SkyBox';
 import { useWeatherStore } from '../store/weatherStore';
+import { OrbitControls } from "@react-three/drei";
 import * as THREE from 'three';
 
 export const WeatherScene: React.FC = () => {
@@ -48,10 +49,10 @@ export const WeatherScene: React.FC = () => {
       const storminess = settings.rainIntensity / 100;
       const baseIntensity = 0.4 - storminess * 0.3;
       const sunIntensity = 1.0 - storminess * 0.7;
-      
+
       ambientLightRef.current.intensity = baseIntensity;
       directionalLightRef.current.intensity = sunIntensity;
-      
+
       // Adjust sun color based on weather
       const sunColor = new THREE.Color().lerpColors(
         new THREE.Color(0xffffff), // Clear
@@ -59,6 +60,12 @@ export const WeatherScene: React.FC = () => {
         storminess
       );
       directionalLightRef.current.color = sunColor;
+
+      // Optional camera motion
+
+      const targetZ = 15 + storminess * 20; // zoom out during storm
+      camera.position.lerp(new THREE.Vector3(0, 10, targetZ), 0.05);
+      camera.lookAt(0, 0, 0);
     }
   });
 
@@ -84,12 +91,15 @@ export const WeatherScene: React.FC = () => {
       {/* Environment */}
       <SkyBox />
       <GroundPlane />
-      
+
       {/* Weather Systems */}
       <RainSystem />
       <CloudSystem />
       <LightningSystem />
       <FogSystem />
+
+      {/* Camera Controls */}
+      <OrbitControls makeDefault />
     </>
   );
 };

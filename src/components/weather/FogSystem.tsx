@@ -6,13 +6,14 @@ import * as THREE from 'three';
 export const FogSystem: React.FC = () => {
   const { scene } = useThree();
   const { settings } = useWeatherStore();
-  const fogRef = useRef<THREE.Fog>();
+  const fogRef = useRef<THREE.Fog | null>(null);
 
   useFrame(() => {
     if (settings.fogIntensity > 0) {
       if (!scene.fog) {
-        scene.fog = new THREE.Fog(0x666699, 5, 50);
-        fogRef.current = scene.fog;
+        const fog = new THREE.Fog(0x666699, 5, 50);
+        scene.fog = fog;
+        fogRef.current = fog;
       }
       
       if (fogRef.current) {
