@@ -83,4 +83,3 @@ export const RainSystem: React.FC = () => {
     <points ref={rainRef} geometry={geometry} material={material} />
   );
 };
-//
